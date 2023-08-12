@@ -1,6 +1,14 @@
 #!/usr/bin/python3
 """Definition of the FileStorage class"""
 import json
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+
 
 class FileStorage:
     """This represent an engine storage
@@ -10,7 +18,15 @@ class FileStorage:
         __objects: empty dict but will store all objects by class name id
     """
     __file_path = 'file.json'
-    __objects = {}
+    __objects = {
+        "BaseModel": BaseModel,
+        "User": User,
+        "State": State,
+        "City": City,
+        "Amenity": Amenity,
+        "Place": Place,
+        "Review": Review
+    }
 
     def all(self):
         """returns the dictionary __objects"""
@@ -23,8 +39,8 @@ class FileStorage:
 
     def save(self):
         """serializes __objects to the JSON file"""
-        obj_dict = FileStorage.__objects
-        to_serialized = {obj: obj_dict[obj].to_dict() for obj in obj_dict.keys()}
+        new_dict = FileStorage.__objects
+        to_serialized = {obj: new_dict[obj].to_dict() for obj in new_dict.keys()}
         with open(FileStorage.__file_path, "w") as f:
             json.dump(to_serialized, f)
 

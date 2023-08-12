@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Definition of the BaseModal class"""
-from models import storage
+import models
 from uuid import uuid4
 from datetime import datetime
 
@@ -28,7 +28,7 @@ class BaseModel():
                 else:
                     self.__dict__[i] = j
         else:
-            storage.new(self)
+            models.storage.new(self)
 
 
     def __str__(self) -> str:
@@ -40,7 +40,7 @@ class BaseModel():
         """updates the public instance attribute updated_at
             with the current datetime"""
         self.updated_at = datetime.now()
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """returns a dictionary containing all keys/values
