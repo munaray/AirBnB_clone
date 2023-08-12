@@ -13,7 +13,11 @@ from models.amenity import Amenity
 from models.review import Review
 
 def tokenize(arg):
-    """Creating a function to tokenize input strings"""
+    """Creating a function to tokenize input strings
+    with curly_b or cb as curly_bracket and square_bracket
+    as square_b or sb.
+
+    """
     curly_b = re.search(r"\{(.*?)\}", arg)
     square_b = re.search(r"\[(.*?)\]", arg)
     if curly_b is None:
@@ -32,10 +36,10 @@ def tokenize(arg):
 
 
 class HBNBCommand(cmd.Cmd):
-    """Defines the HolbertonBnB command interpreter.
+    """This defines HBNB command interpreter
 
     Attributes:
-        prompt (str): The command prompt.
+        prompt (str): The command prompt
     """
 
     prompt = "(hbnb) "
@@ -49,8 +53,18 @@ class HBNBCommand(cmd.Cmd):
         "Review"
     }
 
+
+    def do_quit(self, arg):
+        """Quit to exit the program."""
+        return True
+
+    def do_EOF(self, arg):
+        """EOF to exit the program"""
+        print("")
+        return True
+
     def emptyline(self):
-        """Do nothing upon receiving an empty line."""
+        """Do not execute anything upon receiving an empty line """
         pass
 
     def default(self, arg):
@@ -74,14 +88,7 @@ class HBNBCommand(cmd.Cmd):
         print("*** Unknown syntax: {}".format(arg))
         return False
 
-    def do_quit(self, arg):
-        """Quit command to exit the program."""
-        return True
 
-    def do_EOF(self, arg):
-        """EOF signal to exit the program."""
-        print("")
-        return True
 
     def do_create(self, arg):
         """Usage: create <class>
