@@ -13,6 +13,7 @@ from models.amenity import Amenity
 from models.review import Review
 
 def tokenize(arg):
+    """Creating a function to tokenize input strings"""
     curly_b = re.search(r"\{(.*?)\}", arg)
     square_b = re.search(r"\[(.*?)\]", arg)
     if curly_b is None:
