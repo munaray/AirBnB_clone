@@ -100,8 +100,10 @@ class HBNBCommand(cmd.Cmd):
             print(obj_new["{}.{}".format(args_list[0], args_list[1])])
 
     def do_destroy(self, arg):
-        """Usage: destroy <class> <id> or <class>.destroy(<id>)
-        Delete a class instance of a given id."""
+        """
+        Deletes an instance based on the class name and
+        id (save the change into the JSON file)
+        """
         args_list = tokenize(arg)
         obj_new = storage.all()
         if len(args_list) == 0:
@@ -117,37 +119,25 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
 
     def do_all(self, arg):
-        """Usage: all or all <class> or <class>.all()
-        Display string representations of all instances of a given class.
-        If no class is specified, displays all instantiated objects."""
+        """Prints all string representation of all instances
+        based or not on the class name
+        """
         args_list = tokenize(arg)
         if len(args_list) > 0 and args_list[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         else:
-            objl = []
+            obj_lists = []
             for obj in storage.all().values():
                 if len(args_list) > 0 and args_list[0] == obj.__class__.__name__:
-                    objl.append(obj.__str__())
+                    obj_lists.append(obj.__str__())
                 elif len(args_list) == 0:
-                    objl.append(obj.__str__())
-            print(objl)
+                    obj_lists.append(obj.__str__())
+            print(obj_lists)
 
-    def do_count(self, arg):
-        """Usage: count <class> or <class>.count()
-        Retrieve the number of instances of a given class."""
-        args_list = tokenize(arg)
-        count = 0
-        for obj in storage.all().values():
-            if args_list[0] == obj.__class__.__name__:
-                count += 1
-        print(count)
 
     def do_update(self, arg):
-        """Usage: update <class> <id> <attribute_name> <attribute_value> or
-       <class>.update(<id>, <attribute_name>, <attribute_value>) or
-       <class>.update(<id>, <dictionary>)
-        Update a class instance of a given id by adding or updating
-        a given attribute key/value pair or dictionary."""
+        """Updates an instance based on the class name and id by adding
+        or updating attribute (save the change into the JSON file)."""
         args_list = tokenize(arg)
         obj_new = storage.all()
 
@@ -173,24 +163,34 @@ class HBNBCommand(cmd.Cmd):
                 print("** value missing **")
                 return False
 
+        """Updating the instance attributes based on the provided arguments"""
         if len(args_list) == 4:
             obj = obj_new["{}.{}".format(args_list[0], args_list[1])]
             if args_list[2] in obj.__class__.__dict__.keys():
-                valtype = type(obj.__class__.__dict__[args_list[2]])
-                obj.__dict__[args_list[2]] = valtype(args_list[3])
+                attr_type = type(obj.__class__.__dict__[args_list[2]])
+                obj.__dict__[args_list[2]] = attr_type(args_list[3])
             else:
                 obj.__dict__[args_list[2]] = args_list[3]
         elif type(eval(args_list[2])) == dict:
             obj = obj_new["{}.{}".format(args_list[0], args_list[1])]
-            for k, v in eval(args_list[2]).items():
-                if (k in obj.__class__.__dict__.keys() and
-                        type(obj.__class__.__dict__[k]) in {str, int, float}):
-                    valtype = type(obj.__class__.__dict__[k])
-                    obj.__dict__[k] = valtype(v)
+            for key, value in eval(args_list[2]).items():
+                if (key in obj.__class__.__dict__.keys() and
+                        type(obj.__class__.__dict__[key]) in {str, int, float}):
+                    attr_type = type(obj.__class__.__dict__[key])
+                    obj.__dict__[key] = attr_type(value)
                 else:
-                    obj.__dict__[k] = v
+                    obj.__dict__[key] = value
         storage.save()
 
+    def do_count(self, arg):
+        """Usage: count <class> or <class>.count()
+        Retrieve the number of instances of a given class."""
+        args_list = tokenize(arg)
+        count = 0
+        for obj in storage.all().values():
+            if args_list[0] == obj.__class__.__name__:
+                count += 1
+        print(count)
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
