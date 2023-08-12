@@ -5,8 +5,6 @@ import re
 from shlex import split
 from models import storage
 
-
-"""Creating a function to tokenize input strings"""
 def tokenize(arg):
     curly_brackets = re.search(r"\{(.*?)\}", arg)
     square_brackets = re.search(r"\[(.*?)\]", arg)
