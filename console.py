@@ -4,23 +4,29 @@ import cmd
 import re
 from shlex import split
 from models import storage
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 
 def tokenize(arg):
-    curly_brackets = re.search(r"\{(.*?)\}", arg)
-    square_brackets = re.search(r"\[(.*?)\]", arg)
-    if curly_brackets is None:
-        if square_brackets is None:
+    curly_b = re.search(r"\{(.*?)\}", arg)
+    square_b = re.search(r"\[(.*?)\]", arg)
+    if curly_b is None:
+        if square_b is None:
             return [item.strip(",") for item in split(arg)]
         else:
-            """sbrackets means curly brackets"""
-            before_sbracket = split(arg[:square_brackets.span()[0]])
-            modified_list = [i.strip(",") for i in before_sbracket]
-            modified_list.append(square_brackets.group())
+            before_sb = split(arg[:square_b.span()[0]])
+            modified_list = [i.strip(",") for i in before_sb]
+            modified_list.append(square_b.group())
             return modified_list
     else:
-        before_cbracket = split(arg[:curly_brackets.span()[0]])
-        modified_list = [i.strip(",") for i in before_cbracket]
-        modified_list.append(curly_brackets.group())
+        before_cb = split(arg[:curly_b.span()[0]])
+        modified_list = [i.strip(",") for i in before_cb]
+        modified_list.append(curly_b.group())
         return modified_list
 
 
