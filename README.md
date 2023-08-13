@@ -1,21 +1,71 @@
-# 0x00. AirBnB clone - The console
+# AirBnB Clone(hbnb)
+The overall goal of this project is to deploy on out server a simple copy of the AirBnB Website. It implements only a few features to cover the fundamentals of the higher level programming track.
 
-## 0x00.Table of contents
+It comprises:
+- A command interpreter to manipulate data without a visual interface, like in a Shell (perfect for development and debugging)
 
-* [0x01 Introduction](#0x01-Introduction)
+- A website (the front-end) that shows the final product to everybody: static and dynamic
 
-## 0x01 Introduction
+- A database or files that store data (data = objects)
 
-This is a team project to build a clone of [AirBnB](https://www.airbnb.com/).
+- An API that provides a communication interface between the front-end and your data (retrieve, create, delete, update them)
 
-The console is a command interpreter to to manipulate data without a visual interface, like in a Shell (perfect for development and debugging).
+## The Console
+This is a command line interphase that works quite like the shell except it's a single use function that allows creation, modification and deletion of objects in file storage. It is helps test to see what works and what doesn't in storage before building the rest of the web application.
 
-The console will perform the following tasks:
+## Case Implementation: Interactive mode
 
-* create your data model
-* manage (create, update, destroy, etc) objects via a console / command interpreter
-* store and persist objects to a file (JSON file)
+`>$ ./console.py`
+
+`(hbnb) help`
+
+`Documented commands (type help <topic>):`
+
+`========================================`
+
+`EOF  help  quit`
+
+`(hbnb) help quit`
+
+`quits the interpreter`
+
+`(hbnb)`
+
+`(hbnb) quit`
+
+`>$`
 
 
-### Storage
-This storage engine will give us an abstraction between “My object” and “How they are stored and persisted”.
+## Case Implementation: Non-interactive mode
+`>$ echo "help" | ./console.py`
+
+(hbnb)
+
+`Documented commands (type help <topic>):`
+
+`========================================`
+
+`EOF  help  quit`
+
+`(hbnb)`
+`>$`
+
+`>$ cat test_help`
+
+`help`
+
+`>$`
+
+`>$ cat test_help | ./console.py`
+
+`(hbnb)`
+
+`Documented commands (type help <topic>):`
+
+`========================================`
+
+`EOF  help  quit`
+
+`(hbnb)`
+
+`>$`
