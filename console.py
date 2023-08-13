@@ -35,11 +35,11 @@ def tokenize(arg):
         return modified_list
 
 
-class HBNBCommand(cmd.Cmd):
-    """This defines HBNB command interpreter
+class HBNBcmd_args_match(cmd.Cmd):
+    """This defines HBNB cmd_args_match interpreter
 
     Attributes:
-        prompt (str): The command prompt
+        prompt (str): The cmd_args_match prompt
     """
 
     prompt = "(hbnb) "
@@ -52,27 +52,6 @@ class HBNBCommand(cmd.Cmd):
         "Amenity",
         "Review"
     }
-
-    def default(self, arg):
-        """Default behavior for cmd module when input is invalid"""
-        argdict = {
-            "all": self.do_all,
-            "show": self.do_show,
-            "destroy": self.do_destroy,
-            "count": self.do_count,
-            "update": self.do_update
-        }
-        match = re.search(r"\.", arg)
-        if match is not None:
-            argl = [arg[:match.span()[0]], arg[match.span()[1]:]]
-            match = re.search(r"\((.*?)\)", argl[1])
-            if match is not None:
-                command = [argl[1][:match.span()[0]], match.group()[1:-1]]
-                if command[0] in argdict.keys():
-                    call = "{} {}".format(argl[0], command[1])
-                    return argdict[command[0]](call)
-        print("*** Unknown syntax: {}".format(arg))
-        return False
 
 
     def do_quit(self, arg):
@@ -96,7 +75,7 @@ class HBNBCommand(cmd.Cmd):
         args_list = tokenize(arg)
         if len(args_list) == 0:
             print("** class name missing **")
-        elif args_list[0] not in HBNBCommand.__classes:
+        elif args_list[0] not in HBNBcmd_args_match.__classes:
             print("** class doesn't exist **")
         else:
             print(eval(args_list[0])().id)
@@ -111,7 +90,7 @@ class HBNBCommand(cmd.Cmd):
         obj_new = storage.all()
         if len(args_list) == 0:
             print("** class name missing **")
-        elif args_list[0] not in HBNBCommand.__classes:
+        elif args_list[0] not in HBNBcmd_args_match.__classes:
             print("** class doesn't exist **")
         elif len(args_list) == 1:
             print("** instance id missing **")
@@ -129,7 +108,7 @@ class HBNBCommand(cmd.Cmd):
         obj_new = storage.all()
         if len(args_list) == 0:
             print("** class name missing **")
-        elif args_list[0] not in HBNBCommand.__classes:
+        elif args_list[0] not in HBNBcmd_args_match.__classes:
             print("** class doesn't exist **")
         elif len(args_list) == 1:
             print("** instance id missing **")
@@ -144,7 +123,7 @@ class HBNBCommand(cmd.Cmd):
         based or not on the class name
         """
         args_list = tokenize(arg)
-        if len(args_list) > 0 and args_list[0] not in HBNBCommand.__classes:
+        if len(args_list) > 0 and args_list[0] not in HBNBcmd_args_match.__classes:
             print("** class doesn't exist **")
         else:
             obj_lists = []
@@ -165,7 +144,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args_list) == 0:
             print("** class name missing **")
             return False
-        if args_list[0] not in HBNBCommand.__classes:
+        if args_list[0] not in HBNBcmd_args_match.__classes:
             print("** class doesn't exist **")
             return False
         if len(args_list) == 1:
@@ -204,7 +183,7 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
 
     def do_count(self, arg):
-        """Updating command interpreter to retrieve the
+        """Updating cmd_args_match interpreter to retrieve the
         number of instances of a class: <class name>.count()."""
         args_list = tokenize(arg)
         count = 0
@@ -213,5 +192,27 @@ class HBNBCommand(cmd.Cmd):
                 count += 1
         print(count)
 
+    def default(self, arg):
+        """This handle the dispatching
+        of cmd_args_matchs based on the input"""
+        cmd_methods = {
+            "all": self.do_all,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "count": self.do_count,
+            "update": self.do_update
+        }
+        cmd_match = re.search(r"\.", arg)
+        if cmd_match is not None:
+            arg_lists = [arg[:cmd_match.span()[0]], arg[cmd_match.span()[1]:]]
+            cmd_match = re.search(r"\((.*?)\)", arg_lists[1])
+            if cmd_match is not None:
+                cmd_args_match = [arg_lists[1][:cmd_match.span()[0]], cmd_match.group()[1:-1]]
+                if cmd_args_match[0] in cmd_methods.keys():
+                    call = "{} {}".format(arg_lists[0], cmd_args_match[1])
+                    return cmd_methods[cmd_args_match[0]](call)
+        print("*** Unknown syntax: {}".format(arg))
+        return False
+
 if __name__ == "__main__":
-    HBNBCommand().cmdloop()
+    HBNBcmd_args_match().cmdloop()
