@@ -17,7 +17,7 @@ class FileStorage:
         __file_path: string - path to the JSON file
         __objects: empty dict but will store all objects by class name id
     """
-    __file_path = 'file.json'
+    __file_path = "file.json"
     __objects = {}
 
     def all(self):
@@ -41,9 +41,9 @@ class FileStorage:
         try:
             with open(FileStorage.__file_path) as f:
                 to_deserialize = json.load(f)
-                for i in to_deserialize.value():
-                    class_name = i["__class__"]
-                    del i["__class__"]
-                    self.new(eval(class_name)(**i))
+                for item in to_deserialize.value():
+                    class_name = item["__class__"]
+                    del item["__class__"]
+                    self.new(eval(class_name)(**item))
         except FileNotFoundError:
             return
